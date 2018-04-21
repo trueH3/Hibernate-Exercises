@@ -21,15 +21,12 @@ public class Student {
     private Long id;
 
     @Column(name = "name")
-    @NotNull
     private String name;
 
     @Column(name = "surname")
-    @NotNull
     private String surname;
 
     @Column(name = "dateOfBirth")
-    @NotNull
     private LocalDate dateOfBirth;
 
     public Student() {

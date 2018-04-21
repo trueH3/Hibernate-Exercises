@@ -1,18 +1,20 @@
 package com.szymon.web;
 
+import com.szymon.dao.ComputerDao;
 import com.szymon.dao.StudentDao;
 import com.szymon.model.Student;
+
 import java.io.IOException;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.List;
 import javax.inject.Inject;
-import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -24,14 +26,17 @@ public class StudentServlet extends HttpServlet {
     @Inject
     private StudentDao studentDao;
 
+    @Inject
+    private ComputerDao computerDao;
+
     @Override
-    public void init(ServletConfig config) throws ServletException {
-        super.init(config);
+    public void init() throws ServletException {
+        super.init();
 
         // Test data
         // Students
         studentDao.save(new Student("Michal", "Kowalski", LocalDate.of(1988, 4, 21)));
-        studentDao.save(new Student("Marek", "Zmuda", LocalDate.of(2000,12,30)));
+        studentDao.save(new Student("Marek", "Zmuda", LocalDate.of(2000, 12, 30)));
 
         LOG.info("System time zone is: {}", ZoneId.systemDefault());
     }
@@ -70,6 +75,8 @@ public class StudentServlet extends HttpServlet {
             LOG.info("No Student found for id = {}, nothing to be updated", id);
         } else {
             existingStudent.setName(req.getParameter("name"));
+            existingStudent.setSurname(req.getParameter("surname"));
+            existingStudent.setDateOfBirth(LocalDate.parse(req.getParameter("dateOfBirth")));
 
             studentDao.update(existingStudent);
             LOG.info("Student object updated: {}", existingStudent);
@@ -84,6 +91,8 @@ public class StudentServlet extends HttpServlet {
 
         final Student p = new Student();
         p.setName(req.getParameter("name"));
+        p.setSurname(req.getParameter("surname"));
+        p.setDateOfBirth(LocalDate.parse(req.getParameter("dateOfBirth")));
 
         studentDao.save(p);
         LOG.info("Saved a new Student object: {}", p);

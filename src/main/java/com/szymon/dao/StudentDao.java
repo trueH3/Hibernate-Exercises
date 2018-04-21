@@ -1,6 +1,7 @@
 package com.szymon.dao;
 
 import com.szymon.model.Student;
+
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
