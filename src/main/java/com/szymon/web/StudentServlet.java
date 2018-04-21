@@ -3,6 +3,7 @@ package com.szymon.web;
 import com.szymon.dao.StudentDao;
 import com.szymon.model.Student;
 import java.io.IOException;
+import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.List;
 import javax.inject.Inject;
@@ -29,8 +30,8 @@ public class StudentServlet extends HttpServlet {
 
         // Test data
         // Students
-        studentDao.save(new Student("Michal"));
-        studentDao.save(new Student("Marek"));
+        studentDao.save(new Student("Michal", "Kowalski", LocalDate.of(1988, 4, 21)));
+        studentDao.save(new Student("Marek", "Zmuda", LocalDate.of(2000,12,30)));
 
         LOG.info("System time zone is: {}", ZoneId.systemDefault());
     }

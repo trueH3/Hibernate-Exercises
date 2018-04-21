@@ -8,6 +8,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "STUDENTS")
@@ -22,12 +24,38 @@ public class Student {
     @NotNull
     private String name;
 
+    @Column(name = "surname")
+    @NotNull
+    private String surname;
+
+    @Column(name = "dateOfBirth")
+    @NotNull
+    private LocalDate dateOfBirth;
+
     public Student() {
 
     }
 
-    public Student(String name) {
+    public Student(String name, String surname, LocalDate dateOfBirth) {
         this.name = name;
+        this.surname = surname;
+        this.dateOfBirth = dateOfBirth;
+    }
+
+    public LocalDate getDateOfBirth() {
+        return dateOfBirth;
+    }
+
+    public void setDateOfBirth(LocalDate dateOfBirth) {
+        this.dateOfBirth = dateOfBirth;
+    }
+
+    public String getSurname() {
+        return surname;
+    }
+
+    public void setSurname(String surname) {
+        this.surname = surname;
     }
 
     public Long getId() {
@@ -51,6 +79,8 @@ public class Student {
         final StringBuffer sb = new StringBuffer("Student{");
         sb.append("id=").append(id);
         sb.append(", name='").append(name).append('\'');
+        sb.append(", surname='").append(surname).append('\'');
+        sb.append(", dateOfBirth=").append(dateOfBirth);
         sb.append('}');
         return sb.toString();
     }
