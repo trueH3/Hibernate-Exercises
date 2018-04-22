@@ -24,13 +24,6 @@ public class ComputerServlet extends HttpServlet {
     ComputerDao computerDao;
 
     @Override
-    public void init() throws ServletException {
-        super.init();
-
-        computerDao.save(new Computer("x386", "DOS"));
-    }
-
-    @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
         String action = req.getParameter("action");

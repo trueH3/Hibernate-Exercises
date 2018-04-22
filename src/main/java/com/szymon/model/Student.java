@@ -1,12 +1,7 @@
 package com.szymon.model;
 
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -29,14 +24,27 @@ public class Student {
     @Column(name = "dateOfBirth")
     private LocalDate dateOfBirth;
 
+    @OneToOne
+    @JoinColumn(name = "computer_id", unique = true)
+    private Computer computer;
+
     public Student() {
 
     }
 
-    public Student(String name, String surname, LocalDate dateOfBirth) {
+    public Student(String name, String surname, LocalDate dateOfBirth, Computer computer) {
         this.name = name;
         this.surname = surname;
         this.dateOfBirth = dateOfBirth;
+        this.computer = computer;
+    }
+
+    public Computer getComputer() {
+        return computer;
+    }
+
+    public void setComputer(Computer computer) {
+        this.computer = computer;
     }
 
     public LocalDate getDateOfBirth() {
@@ -78,6 +86,7 @@ public class Student {
         sb.append(", name='").append(name).append('\'');
         sb.append(", surname='").append(surname).append('\'');
         sb.append(", dateOfBirth=").append(dateOfBirth);
+        sb.append(", computer=").append(computer);
         sb.append('}');
         return sb.toString();
     }

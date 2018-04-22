@@ -2,6 +2,7 @@ package com.szymon.web;
 
 import com.szymon.dao.ComputerDao;
 import com.szymon.dao.StudentDao;
+import com.szymon.model.Computer;
 import com.szymon.model.Student;
 
 import java.io.IOException;
@@ -34,9 +35,17 @@ public class StudentServlet extends HttpServlet {
         super.init();
 
         // Test data
-        // Students
-        studentDao.save(new Student("Michal", "Kowalski", LocalDate.of(1988, 4, 21)));
-        studentDao.save(new Student("Marek", "Zmuda", LocalDate.of(2000, 12, 30)));
+        Computer c1 = new Computer("x386", "DOS");
+        computerDao.save(c1);
+
+        Computer c2 = new Computer("Pentium_III", "Windows_95");
+        computerDao.save(c2);
+
+        Computer c3 = new Computer("Amiga_500", "noSystem");
+        computerDao.save(c3);
+
+        studentDao.save(new Student("Michal", "Kowalski", LocalDate.of(1988, 4, 21), c1));
+        studentDao.save(new Student("Marek", "Zmuda", LocalDate.of(2000, 12, 30), c2));
 
         LOG.info("System time zone is: {}", ZoneId.systemDefault());
     }
@@ -78,6 +87,10 @@ public class StudentServlet extends HttpServlet {
             existingStudent.setSurname(req.getParameter("surname"));
             existingStudent.setDateOfBirth(LocalDate.parse(req.getParameter("dateOfBirth")));
 
+            Long computerId = Long.parseLong(req.getParameter("computerId"));
+            Computer matchedComputer = computerDao.findById(computerId);
+            existingStudent.setComputer(matchedComputer);
+
             studentDao.update(existingStudent);
             LOG.info("Student object updated: {}", existingStudent);
         }
@@ -93,6 +106,9 @@ public class StudentServlet extends HttpServlet {
         p.setName(req.getParameter("name"));
         p.setSurname(req.getParameter("surname"));
         p.setDateOfBirth(LocalDate.parse(req.getParameter("dateOfBirth")));
+        Long computerId = Long.parseLong(req.getParameter("computerId"));
+        Computer matchedComputer = computerDao.findById(computerId);
+        p.setComputer(matchedComputer);
 
         studentDao.save(p);
         LOG.info("Saved a new Student object: {}", p);
