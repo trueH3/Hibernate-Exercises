@@ -28,15 +28,28 @@ public class Student {
     @JoinColumn(name = "computer_id", unique = true)
     private Computer computer;
 
+    @ManyToOne
+    @JoinColumn(name = "adress_id")
+    private Adress adress;
+
     public Student() {
 
     }
 
-    public Student(String name, String surname, LocalDate dateOfBirth, Computer computer) {
+    public Student(String name, String surname, LocalDate dateOfBirth, Computer computer, Adress adress) {
         this.name = name;
         this.surname = surname;
         this.dateOfBirth = dateOfBirth;
         this.computer = computer;
+        this.adress = adress;
+    }
+
+    public Adress getAdress() {
+        return adress;
+    }
+
+    public void setAdress(Adress adress) {
+        this.adress = adress;
     }
 
     public Computer getComputer() {
@@ -87,6 +100,7 @@ public class Student {
         sb.append(", surname='").append(surname).append('\'');
         sb.append(", dateOfBirth=").append(dateOfBirth);
         sb.append(", computer=").append(computer);
+        sb.append(", adress=").append(adress);
         sb.append('}');
         return sb.toString();
     }

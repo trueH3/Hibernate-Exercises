@@ -1,7 +1,9 @@
 package com.szymon.web;
 
+import com.szymon.dao.AdressDao;
 import com.szymon.dao.ComputerDao;
 import com.szymon.dao.StudentDao;
+import com.szymon.model.Adress;
 import com.szymon.model.Computer;
 import com.szymon.model.Student;
 
@@ -30,6 +32,9 @@ public class StudentServlet extends HttpServlet {
     @Inject
     private ComputerDao computerDao;
 
+    @Inject
+    private AdressDao adressDao;
+
     @Override
     public void init() throws ServletException {
         super.init();
@@ -44,8 +49,14 @@ public class StudentServlet extends HttpServlet {
         Computer c3 = new Computer("Amiga_500", "noSystem");
         computerDao.save(c3);
 
-        studentDao.save(new Student("Michal", "Kowalski", LocalDate.of(1988, 4, 21), c1));
-        studentDao.save(new Student("Marek", "Zmuda", LocalDate.of(2000, 12, 30), c2));
+        Adress a1 = new Adress("Kazimierza Wlk", "Brodnica");
+        adressDao.save(a1);
+
+        Adress a2 = new Adress("Kołobrzeska", "Gdańsk");
+        adressDao.save(a2);
+
+        studentDao.save(new Student("Michal", "Kowalski", LocalDate.of(1988, 4, 21), c1, a1));
+        studentDao.save(new Student("Marek", "Zmuda", LocalDate.of(2000, 12, 30), c2, a1));
 
         LOG.info("System time zone is: {}", ZoneId.systemDefault());
     }
@@ -91,6 +102,10 @@ public class StudentServlet extends HttpServlet {
             Computer matchedComputer = computerDao.findById(computerId);
             existingStudent.setComputer(matchedComputer);
 
+            Long adressId = Long.parseLong(req.getParameter("adressId"));
+            Adress matchedAdress = adressDao.findById(adressId);
+            existingStudent.setAdress(matchedAdress);
+
             studentDao.update(existingStudent);
             LOG.info("Student object updated: {}", existingStudent);
         }
@@ -106,9 +121,14 @@ public class StudentServlet extends HttpServlet {
         p.setName(req.getParameter("name"));
         p.setSurname(req.getParameter("surname"));
         p.setDateOfBirth(LocalDate.parse(req.getParameter("dateOfBirth")));
+
         Long computerId = Long.parseLong(req.getParameter("computerId"));
         Computer matchedComputer = computerDao.findById(computerId);
         p.setComputer(matchedComputer);
+
+        Long adressId = Long.parseLong(req.getParameter("adressId"));
+        Adress matchedAdress = adressDao.findById(adressId);
+        p.setAdress(matchedAdress);
 
         studentDao.save(p);
         LOG.info("Saved a new Student object: {}", p);
