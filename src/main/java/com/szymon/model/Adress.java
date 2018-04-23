@@ -73,6 +73,8 @@ public class Adress {
         sb.append("id=").append(id);
         sb.append(", street='").append(street).append('\'');
         sb.append(", city='").append(city).append('\'');
+        sb.append(", students=").append(students.stream()
+                .map(Student::getSurname).collect(joining(", ")));
         sb.append('}');
         return sb.toString();
     }

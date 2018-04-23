@@ -5,6 +5,9 @@ import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.Set;
+
+import static java.util.stream.Collectors.joining;
 
 @Entity
 @Table(name = "STUDENTS")
@@ -32,16 +35,31 @@ public class Student {
     @JoinColumn(name = "adress_id")
     private Adress adress;
 
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(name = "STUDENTS_TO_COURSES",
+            joinColumns = @JoinColumn(name = "student_id", referencedColumnName = "id"),
+            inverseJoinColumns = @JoinColumn(name = "course_id", referencedColumnName = "id"))
+    private Set<Course> courses;
+
     public Student() {
 
     }
 
-    public Student(String name, String surname, LocalDate dateOfBirth, Computer computer, Adress adress) {
+    public Student(String name, String surname, LocalDate dateOfBirth, Computer computer, Adress adress, Set<Course> courses) {
         this.name = name;
         this.surname = surname;
         this.dateOfBirth = dateOfBirth;
         this.computer = computer;
         this.adress = adress;
+        this.courses = courses;
+    }
+
+    public Set<Course> getCourses() {
+        return courses;
+    }
+
+    public void setCourses(Set<Course> courses) {
+        this.courses = courses;
     }
 
     public Adress getAdress() {
@@ -101,6 +119,7 @@ public class Student {
         sb.append(", dateOfBirth=").append(dateOfBirth);
         sb.append(", computer=").append(computer);
         sb.append(", adress=").append(adress);
+        sb.append(", courses=").append(courses.stream().map(Course::getName).collect(joining(", ")));
         sb.append('}');
         return sb.toString();
     }

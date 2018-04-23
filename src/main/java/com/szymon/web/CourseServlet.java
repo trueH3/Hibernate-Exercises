@@ -1,7 +1,8 @@
 package com.szymon.web;
 
-import com.szymon.dao.AdressDao;
-import com.szymon.model.Adress;
+
+import com.szymon.dao.CourseDao;
+import com.szymon.model.Course;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -11,20 +12,16 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.transaction.Transactional;
-import javax.xml.ws.spi.http.HttpContext;
 import java.io.IOException;
 import java.util.List;
 
+@WebServlet (urlPatterns = "/course")
+public class CourseServlet extends HttpServlet {
 
-@WebServlet( urlPatterns = "/adress")
-@Transactional
-public class AdressServlet extends HttpServlet {
-
-    private Logger LOG = LoggerFactory.getLogger(AdressServlet.class);
+    private Logger LOG = LoggerFactory.getLogger(CourseServlet.class);
 
     @Inject
-    AdressDao adressDao;
+    CourseDao courseDao;
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -39,65 +36,62 @@ public class AdressServlet extends HttpServlet {
         if (action.equals("findAll")) {
             findAll(req, resp);
         } else if (action.equals("add")) {
-            addAdress(req, resp);
+            addCourse(req, resp);
         } else if (action.equals("delete")) {
-            deleteAdress(req, resp);
+            deleteCourse(req, resp);
         } else if (action.equals("update")) {
-            updateAdress(req, resp);
+            updateCourse(req, resp);
         } else {
             resp.getWriter().write("Unknown action.");
         }
     }
-
-    private void updateAdress (HttpServletRequest req, HttpServletResponse resp) throws IOException {
+    private void updateCourse (HttpServletRequest req, HttpServletResponse resp) throws IOException {
 
         final Long id = Long.parseLong(req.getParameter("id"));
-        LOG.info("Updating Adress with id = {}", id);
+        LOG.info("Updating Course with id = {}", id);
 
-        final Adress existingAdress = adressDao.findById(id);
-        if (existingAdress == null) {
-            LOG.info("No Adress found for id = {}, nothing to be updated", id);
+        final Course existingCourse = courseDao.findById(id);
+        if (existingCourse == null) {
+            LOG.info("No Course found for id = {}, nothing to be updated", id);
         } else {
-            existingAdress.setStreet(req.getParameter("street"));
-            existingAdress.setCity(req.getParameter("city"));
+            existingCourse.setName(req.getParameter("name"));
 
-            adressDao.update(existingAdress);
-            LOG.info("Adress object updated: {}", existingAdress);
+            courseDao.update(existingCourse);
+            LOG.info("Course object updated: {}", existingCourse);
         }
 
         // Return all persisted objects
         findAll(req, resp);
     }
 
-    private void addAdress(HttpServletRequest req, HttpServletResponse resp)
+    private void addCourse(HttpServletRequest req, HttpServletResponse resp)
             throws IOException {
 
-        final Adress adress = new Adress();
-        adress.setStreet(req.getParameter("street"));
-        adress.setCity(req.getParameter("city"));
+        final Course course = new Course();
+        course.setName(req.getParameter("name"));
 
-        adressDao.save(adress);
-        LOG.info("Saved a new Adress object: {}", adress);
+        courseDao.save(course);
+        LOG.info("Saved a new Course object: {}", course);
 
         // Return all persisted objects
         findAll(req, resp);
     }
 
-    private void deleteAdress(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+    private void deleteCourse(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         final Long id = Long.parseLong(req.getParameter("id"));
-        LOG.info("Removing Adress with id = {}", id);
+        LOG.info("Removing Course with id = {}", id);
 
-        adressDao.delete(id);
+        courseDao.delete(id);
 
         // Return all persisted objects
         findAll(req, resp);
     }
 
     private void findAll(HttpServletRequest req, HttpServletResponse resp) throws IOException {
-        final List<Adress> result = adressDao.findAll();
+        final List<Course> result = courseDao.findAll();
         LOG.info("Found {} objects", result.size());
-        for (Adress adress : result) {
-            resp.getWriter().write(adress.toString() + "\n");
+        for (Course course : result) {
+            resp.getWriter().write(course.toString() + "\n");
         }
     }
 }
