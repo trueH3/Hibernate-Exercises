@@ -81,7 +81,7 @@ public class StudentServlet extends HttpServlet {
 
         studentDao.save(new Student("Michal", "Kowalski", LocalDate.of(1988, 4, 21), c1, a1, student1Course));
         studentDao.save(new Student("Marek", "Zmuda", LocalDate.of(2000, 12, 30), c2, a2, student2Course));
-
+        studentDao.save(new Student("Zygfryd", "Kozuba", LocalDate.of(1952, 12, 30), c3, a2, student2Course));
         LOG.info("System time zone is: {}", ZoneId.systemDefault());
     }
 

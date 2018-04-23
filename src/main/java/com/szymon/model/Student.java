@@ -10,6 +10,12 @@ import java.util.Set;
 import static java.util.stream.Collectors.joining;
 
 @Entity
+@NamedQueries({
+        @NamedQuery(
+                name = "Student.surnameWithK",
+                query = "SELECT s FROM Student s WHERE s.surname LIKE :letter"
+        )
+})
 @Table(name = "STUDENTS")
 public class Student {
 

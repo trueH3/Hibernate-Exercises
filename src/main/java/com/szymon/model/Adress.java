@@ -24,7 +24,7 @@ public class Adress {
     @NotNull
     private String city;
 
-    @OneToMany(mappedBy = "adress", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "adress", fetch = FetchType.EAGER)
     private Set<Student> students;
 
     public Adress() {
