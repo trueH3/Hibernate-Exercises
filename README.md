@@ -1,6 +1,6 @@
 # MyHibernate
 
-This is a simple exercise to get familiar with Hibernate ORM. Right now it consists 1 table called Students with Id and name columns. In future this project will be updated. As a database I've used MySQL and as an application server - Wildfly.
+This is a simple exercise to get familiar with Hibernate ORM. Right now it consists 4 tables. I used relation OneToOne, ManyToOne, ManyToMany between them. I also wrote some queries, using nativeQuery, query, namedQuery As a database I've used MySQL and as an application server - Wildfly.
 
 **Things to do to run program**
 1. in MySQL create schema called "test"
